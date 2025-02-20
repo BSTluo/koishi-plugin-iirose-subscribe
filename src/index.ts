@@ -76,16 +76,16 @@ export function apply(ctx: Context)
     if (v.session.platform !== 'iirose') { return ' [IIROSE-Subscribe] 该平台不支持使用此插件'; }
     const userData = await ctx.database.get('iirose_subscribe', v.session.userId);
 
-    if (userData.length > 0 && userData[0].status)
+    if (userData.length > 0 && !userData[0].status)
     {
-      return ' [IIROSE-Subscribe] 你已经设置为订阅状态了哦~';
+      return ' [IIROSE-Subscribe] 你已经取消订阅状态了哦~';
     } else if (userData.length > 0)
     {
       await ctx.database.set('iirose_subscribe', v.session.userId, {
         status: false
       });
 
-      return ` [IIROSE-Subscribe] 将 [*${v.session.username}*] 设置为BOT订阅状态`;
+      return ` [IIROSE-Subscribe] 将 [*${v.session.username}*] 设置为BOT取消订阅状态`;
     } else if (userData.length == 0)
     {
       ctx.database.create('iirose_subscribe', {
@@ -93,7 +93,7 @@ export function apply(ctx: Context)
         status: false
       });
 
-      return ` [IIROSE-Subscribe] 将 [*${v.session.username}*] 设置为BOT订阅状态`;
+      return ` [IIROSE-Subscribe] 将 [*${v.session.username}*] 设置为BOT取消订阅状态`;
     }
   });
   
